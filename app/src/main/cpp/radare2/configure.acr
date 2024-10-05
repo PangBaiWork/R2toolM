@@ -1,0 +1,343 @@
+PKGNAME radare2
+VERSION 5.9.4
+CONTACT pancake ; pancake@nopcode.org
+
+DESCRIPTION The UNIX-like reverse engineering toolkit ;
+
+LANG_C!
+
+ARG_DISABLE DEBUGGER debugger disable native debugger features ;
+
+USE_DL
+
+USE_PKGCONFIG
+
+R2_BUILDSYSTEM = "make" ;
+
+CHKPRG! PATCH patch
+CHKPRG! AR ar
+CHKPRG GIT git
+CHKPRG GPERF gperf
+CHKLIB magic
+CHKINC linux/can.h
+ARG_WITH USE_MAGIC sysmagic force to use system's magic ;
+IFAND HAVE_LIB_MAGIC USE_MAGIC {
+	USE_LIB_MAGIC = 1 ;
+	LIBMAGIC = -lmagic ;
+}{
+	USE_LIB_MAGIC = 0 ;
+	LIBMAGIC = '' ;
+}
+
+ARG_DISABLE WANT_THREADS threads disable use of thread apis ;
+
+(( useful for static builds . see sys/static.sh ))
+ARG_DISABLE LOADLIBS loadlibs disable loading plugins ;
+
+ARG_ENABLE R_CRITICAL_ENABLED threadsafety enable mutexes in critical code paths ;
+
+ARG_WITHOUT WANT_DYLINK dylink disable support for dynamic loading of plugins ;
+ARG_WITHOUT HAVE_FORK fork disable fork ;
+ARG_WITHOUT WANT_PTRACE_WRAP ptrace-wrap build ptrace-wrap support needed for the iaito debugger on Linux ;
+ARG_WITHOUT WANT_GPERF gperf do not statically link the sdb databases even if gperf is found ;
+ARG_WITHOUT WANT_CAPSTONE capstone dont build the capstone dependency ;
+
+IFNOT WANT_GPERF {
+	HAVE_GPERF = 0 ;
+}
+
+ARG_WITH WITH_LIBR libr build libr.a and libr.dylib ;
+ARG_WITH WITH_STATIC_THEMES static-themes default themes are compiled and fallback if not available on disk ;
+
+(( CAPSTONE ))
+ARG_WITH USE_CSNEXT capstone-next build next branch of the capstone disassembler ;
+(( TODO rename to capstone-v5 and capstone-v4 ))
+ARG_WITH USE_CS5 capstone5 build v5 branch of capstone5 (default) ;
+ARG_WITH USE_CS4 capstone4 build v4 branch of capstone ;
+
+ARG_WITH WITH_CAPSTONE syscapstone force to use system-wide capstone ;
+ARG_WITHOUT WITHOUT_SYSCAPSTONE syscapstone avoid the system-wide capstone ;
+IF WITH_CAPSTONE {
+	PKGCFG CAPSTONE_CFLAGS CAPSTONE_LDFLAGS capstone
+}
+IFAND WITH_CAPSTONE HAVE_PKGCFG_CAPSTONE {
+	USE_CAPSTONE = 1 ;
+}{
+	USE_CAPSTONE = 0 ;
+}
+
+IFNOT WITHOUT_SYSCAPSTONE {
+	USE_CAPSTONE = 0 ;
+	HAVE_PKGCFG_CAPSTONE = 0 ;
+	CAPSTONE_CFLAGS = "" ;
+	CAPSTONE_LDFLAGS = "" ;
+}
+
+(( SQSH ))
+PKGCFG SQSH_CFLAGS SQSH_LDFLAGS libsqsh
+ARG_WITHOUT WITH_SQSH sqsh ensure squashfs support is not included, even if library is found ;
+IFAND WITH_SQSH HAVE_PKGCFG_LIBSQSH {
+	USE_SQSH = 1 ;
+}{
+	USE_SQSH = 0 ;
+}
+
+(( LZ4 ))
+PKGCFG LZ4_CFLAGS LZ4_LDFLAGS liblz4
+ARG_WITH WITH_SYSLZ4 syslz4 force to use system's liblz4 ;
+IFAND WITH_SYSLZ4 HAVE_PKGCFG_LIBLZ4 {
+	USE_SYSLZ4 = 1 ;
+}{
+	USE_SYSLZ4 = 0 ;
+
+}
+
+(( ZIP ))
+CHKLIB z
+CHKLIB zip
+ARG_WITH USE_ZIP syszip force to use system's libzip and zlib ;
+IFAND HAVE_LIB_Z USE_ZIP {
+	IF HAVE_LIB_ZIP {
+		USE_LIB_ZIP = 1 ;
+		LIBZIP = -lz -lzip ;
+	}{
+		USE_LIB_ZIP = 0 ;
+		LIBZIP = '' ; (( static linking to shlr/zip ))
+	}
+}{
+	USE_LIB_ZIP = 0 ;
+	LIBZIP = '' ; (( static linking to shlr/zip ))
+}
+
+CHKLIB xxhash
+ARG_WITH USE_XXHASH sysxxhash force to use system's xxhash ;
+IFAND HAVE_LIB_XXHASH USE_XXHASH {
+	USE_LIB_XXHASH = 1 ;
+	LIBXXHASH = -lxxhash ;
+}{
+	USE_LIB_XXHASH = 0 ;
+	LIBXXHASH = '' ;
+}
+
+ARG_WITHOUT WITH_GPL gpl do not build GPL code (grub, cxx, ... ) ;
+
+CHKDECL sys/personality.h ADDR_NO_RANDOMIZE
+CHKDECL features.h __GLIBC__
+CHKFNC c arc4random_uniform
+CHKFNC c explicit_bzero
+CHKFNC c explicit_memset
+CHKFNC c clock_nanosleep
+CHKFNC c sigaction
+CHKFNC c clock_gettime
+
+IFNOT HAVE_CLOCK_GETTIME {
+	IF HAVE_DECL___GLIBC__ {
+		CLOCK_LDFLAGS += '-lrt' ;
+	}
+}
+
+CHKFLG SUPPORT_GNU99 -std=gnu99 ;
+
+(( TODO must deprecate
+CHKLIB gmp
+ARG_WITHOUT HAVE_GMP gmp disable GMP dependency ;
+IFNOT HAVE_GMP { HAVE_LIB_GMP = 0 ; }
+HAVE_GMP = 0 ;
+))
+HAVE_LIB_GMP = 0 ;
+
+
+(( openssl is used for https:// in rsocket and crypto/hash ))
+ARG_WITH WANT_SSL ssl build with (Open|Boring|..)SSL if possible ;
+ARG_WITH WANT_SSL_CRYPTO ssl-crypto build crypto code with libssl ;
+IFNOT WANT_SSL {
+	HAVE_OPENSSL = 0 ;
+	SSL_CFLAGS = "" ;
+	SSL_LDFLAGS = "" ;
+}{
+	CHKLIB ssl
+	PKGCFG SSL_CFLAGS SSL_LDFLAGS openssl
+	IFNOTNULL SSL_LDFLAGS {
+		HAVE_OPENSSL = 1 ;
+	}
+
+	IFNULL SSL_LDFLAGS {
+		IFNOT HAVE_LIB_SSL {
+			HAVE_OPENSSL = 0 ;
+		}{
+			SSL_LDFLAGS = -lssl ;
+		}
+	}
+	IFAND WANT_SSL_CRYPTO HAVE_OPENSSL {
+		WANT_SSL_CRYPTO = 1 ;
+	}{
+		WANT_SSL_CRYPTO = 0 ;
+	}
+}
+
+ARG_WITH WANT_LIBUV libuv use libuv if available ;
+CHKVER libuv 1.0.0
+IF HAVE_LIBUV_VERSION_1_0_0 {
+	PKGCFG LIBUV_CFLAGS LIBUV_LDFLAGS libuv
+	IFNOTNULL LIBUV_LDFLAGS {
+		HAVE_LIBUV = 1 ;
+	}{
+		HAVE_LIBUV = 0 ;
+	}
+	IFNOT WANT_LIBUV {
+		HAVE_LIBUV = 0 ;
+	}
+}{
+	HAVE_LIBUV = 0 ;
+}
+
+ARG_WITH USE_NEW_ABI new-abi use the new ABI breaking changes scheduled for the next major release ;
+
+ARG_WITH USE_RPATH rpath use rpath to build ;
+
+(( rules for the compiler ))
+ARG_WITH USERCC=gcc compiler Define compiler to use (see mk/) ;
+ARG_WITH USEROSTYPE=auto ostype Choose OS ( android windows wsl mingw32 bsd solaris gnulinux darwin haiku ) ;
+
+(( TODO: throw error if unknown ostype ))
+(( TODO: handle BSD os as different ostype? ))
+IFEQ USEROSTYPE auto ; {
+	IFEQ HOST_OS mingw32_nt-6.2 ; {
+		USEROSTYPE = mingw32 ;
+	}{
+	IFEQ HOST_OS mingw32_nt ; {
+		USEROSTYPE = mingw32 ;
+	}{
+	IFEQ HOST_OS wsl ; {
+		USEROSTYPE =  wsl ;
+	}{
+	IFEQ HOST_OS linux ; {
+		USEROSTYPE = gnulinux ;
+	}{
+	IFEQ HOST_OS serenityos ; {
+		USEROSTYPE = serenityos ;
+		HAVE_LIB_DL = 1 ;
+		DL_LIBS = -ldl ;
+	}{
+	IFEQ HOST_OS gnu ; {
+		(( GNU / HURD ))
+		USEROSTYPE = gnulinux ;
+		HAVE_LIB_DL = 1 ;
+		DL_LIBS = -ldl ;
+	}{
+	IFEQ HOST_OS sunos ; {
+		USEROSTYPE = solaris ;
+	}{
+	IFEQ HOST_OS gnu/kfreebsd ; {
+		USEROSTYPE = bsd ;
+	}{
+	IFEQ HOST_OS netbsd ; {
+		USEROSTYPE = bsd ;
+	}{
+	IFEQ HOST_OS freebsd ; {
+		USEROSTYPE = bsd ;
+	}{
+	IFEQ HOST_OS openbsd ; {
+		USEROSTYPE = bsd ;
+	}{
+	IFEQ HOST_OS darwin ; {
+		USEROSTYPE = darwin ;
+	}{
+	IFEQ HOST_OS haiku ; {
+		USEROSTYPE = haiku ;
+	}{
+	IFEQ HOST_OS aix ; {
+		USEROSTYPE = aix ;
+	} } } } } } } } } } } } } }
+}
+
+(( this hack is required for openbsd ports ))
+ARG_WITH LIBVERSION=xxx libversion specify different libversion ;
+ARG_WITHOUT HAVE_JEMALLOC jemalloc build without jemalloc ;
+
+IFEQ LIBVERSION xxx ; {
+	LIBVERSION = $VERSION ;
+}
+
+IFEQ USEROSTYPE gnulinux ; {
+	HAVE_PTRACE = 1 ;
+	USE_PTRACE_WRAP = 1 ;
+}{
+IFEQ USEROSTYPE wsl ; {
+	BUILD = ${SPLIT_CPU}-unknown-linux-gnu ;
+	HOST = $BUILD ;
+	TARGET = $HOST ;
+	USEROSTYPE = gnulinux ;
+	HAVE_PTRACE = 1 ;
+	USE_PTRACE_WRAP = 0 ;
+}{
+IFEQ USEROSTYPE android ; {
+	HAVE_PTRACE = 1 ;
+	USE_PTRACE_WRAP = 1 ;
+}{
+IFEQ USEROSTYPE mingw32 ; {
+	HAVE_PTRACE = 0 ;
+	USE_PTRACE_WRAP = 0 ;
+}{
+IFEQ USEROSTYPE solaris ; {
+	HAVE_PTRACE = 0 ;
+	USE_PTRACE_WRAP = 0 ;
+}{
+IFEQ USEROSTYPE haiku ; {
+	HAVE_PTRACE = 0 ;
+	USE_PTRACE_WRAP = 0 ;
+}{
+IFEQ USEROSTYPE aix ; {
+	HAVE_PTRACE = 0 ;
+	USE_PTRACE_WRAP = 0 ;
+}{
+	HAVE_PTRACE = 1 ;
+	USE_PTRACE_WRAP = 0 ;
+} } } } } } }
+
+IFNOT DEBUGGER {
+	HAVE_PTRACE = 0 ;
+}
+
+IFEQ WANT_PTRACE_WRAP 0 ; {
+	USE_PTRACE_WRAP = 0 ;
+}
+
+ARG_WITH R_CHECKS_LEVEL=2 checks-level value between 0 and 3 to enable different level of assert (see R_CHECKS_LEVEL) ;
+ARG_DISABLE WANT_DEBUGSTUFF debug-stuff disable the log messages and disable control-c ;
+
+REPORT
+	BUILD CC CFLAGS DEBUGGER HAVE_ARC4RANDOM_UNIFORM HAVE_EXPLICIT_BZERO USE_NEW_ABI
+	HAVE_EXPLICIT_MEMSET HAVE_FORK HAVE_GPERF HAVE_LIBUV HAVE_LIB_GMP WANT_DEBUGSTUFF
+	HAVE_OPENSSL WANT_SSL_CRYPTO HAVE_PTRACE HOST LDFLAGS LIBVERSION PKGCONFIG PREFIX
+	R_CHECKS_LEVEL TARGET USERCC USEROSTYPE USE_CAPSTONE USE_LIB_MAGIC NEW_IO_CACHE USE_SQSH
+	USE_LIB_XXHASH USE_LIB_ZIP USE_PTRACE_WRAP USE_SYSLZ4 VERSION WANT_DYLINK USE_SMALLZ4
+;
+
+PKGCFG_DO pkgcfg/r_egg.pc r_egg r_asm r_syscall r_util r_reg r_flag r_cons ;
+PKGCFG_DO pkgcfg/r_io.pc r_io r_util r_socket r_cons r_crypto ;
+PKGCFG_DO pkgcfg/r_esil.pc r_esil r_util r_reg ;
+PKGCFG_DO pkgcfg/r_cons.pc r_cons r_util ;
+PKGCFG_DO pkgcfg/r_socket.pc r_socket r_util ;
+PKGCFG_DO pkgcfg/r_reg.pc r_reg r_util ;
+PKGCFG_DO pkgcfg/r_bp.pc r_bp r_util ;
+PKGCFG_DO pkgcfg/r_flag.pc r_flag r_util ;
+PKGCFG_DO pkgcfg/r_bin.pc r_bin r_util r_io r_socket r_magic ;
+PKGCFG_DO pkgcfg/r_lang.pc r_lang r_util ;
+PKGCFG_DO pkgcfg/r_syscall.pc r_syscall r_util ;
+PKGCFG_DO pkgcfg/r_config.pc r_config r_util ;
+PKGCFG_DO pkgcfg/r_fs.pc r_fs r_util r_io ;
+PKGCFG_DO pkgcfg/r_util.pc r_util ;
+PKGCFG_DO pkgcfg/r_magic.pc r_magic r_util ;
+PKGCFG_DO pkgcfg/r_search.pc r_search r_util ;
+PKGCFG_DO pkgcfg/r_arch.pc r_arch r_util r_reg r_esil ;
+PKGCFG_DO pkgcfg/r_crypto.pc r_crypto r_util ;
+PKGCFG_DO pkgcfg/r_anal.pc r_anal r_util r_reg r_syscall r_search r_cons r_flag r_crypto r_arch r_esil ;
+PKGCFG_DO pkgcfg/r_asm.pc r_asm r_util r_reg r_syscall r_search r_cons r_flag r_crypto r_arch r_esil ;
+PKGCFG_DO pkgcfg/r_debug.pc r_debug r_util ;
+
+/* TODO: Add the rest of .pc files here.. add a rule for acr? */
+SUBDIRS ./config-user.mk
+	libr/include/r_userconf.h
+	pkgcfg/r_core.pc
+;

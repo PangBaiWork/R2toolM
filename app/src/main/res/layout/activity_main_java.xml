@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorSurface"
+            app:menu="@menu/main_activity_menu"
+            app:subtitle="@string/loading"
+            app:subtitleTextColor="?attr/colorPrimary"
+            app:title="@string/app_name"
+            tools:openDrawer="start" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progressbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="false"
+            app:layout_anchor="@+id/toolbar"
+            app:layout_anchorGravity="bottom|center" />
+
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        <include
+            layout="@layout/layout_r2editorview"
+            android:id="@+id/r2editorview" />
+            <LinearLayout
+                android:id="@+id/float_action_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="50dp"
+                android:baselineAligned="true"
+                android:fitsSystemWindows="false"
+                android:orientation="vertical">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/float_action_add"
+                    style="?attr/floatingActionButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_add"
+                    app:useCompatPadding="true" />
+
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/float_action_undo"
+                    style="?attr/floatingActionButtonStyle"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_file_previous"
+                    app:useCompatPadding="true" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bottom_sheet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:behavior_hideable="false"
+                app:behavior_peekHeight="45dp"
+                app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+<!--                <include-->
+<!--                    android:id="@+id/search_bar"-->
+<!--                    layout="@layout/editor_searcher"-->
+<!--                    android:visibility="gone" />-->
+
+                <RelativeLayout
+                    android:id="@+id/bottom_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+
+                    <TextView
+                        android:id="@+id/execution_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:text="@string/run_scripts"
+                        android:gravity="center" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/edit_symbol_parent">
+
+<!--                        <com.pangbai.weblog.view.SymInputView-->
+<!--                            android:id="@+id/edit_symbol"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="45dp"-->
+<!--                            android:background="?attr/colorSurface"-->
+<!--                            android:orientation="horizontal" />-->
+
+                    </HorizontalScrollView>
+                </RelativeLayout>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_anchor="@+id/markdown_view"
+                    app:layout_anchorGravity="bottom|center"
+                    app:paddingBottomSystemWindowInsets="true" />
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/viewpager"
+                    android:nestedScrollingEnabled="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"/>
+            </LinearLayout>
+
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
+
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/sym_list" />
+
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/activity_header"
+        app:itemHorizontalPadding="60dp"
+        app:itemTextAppearanceActiveBoldEnabled="true"
+        app:menu="@menu/navigation_menu" />
+
+
+</androidx.drawerlayout.widget.DrawerLayout>

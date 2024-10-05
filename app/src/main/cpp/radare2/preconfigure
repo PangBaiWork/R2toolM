@@ -1,0 +1,48 @@
+#!/bin/sh
+# env setup
+MAKE=make
+gmake --version > /dev/null 2>&1
+[ $? = 0 ] && MAKE=gmake
+
+
+echo "[*] Finding `type ${MAKE}` OK"
+
+if [ ! -f config-user.mk ]; then
+	printf "[*] Configuring the build system ... "
+	./configure > /dev/null 2>&1 || exit 1
+	echo OK
+fi
+
+# checks
+if [ -d "$HOME/.local/share/radare2/prefix/include/capstone" ]; then
+	echo "[*] Using capstone from r2pm"
+	export PKG_CONFIG_PATH
+else
+	printf "[*] Checking out capstone... "
+	rm -rf shlr/capstone
+	${MAKE} -C shlr capstone > /dev/null 2>&1 || exit 1
+	echo OK
+fi
+
+V35WD=libr/arch/p/arm/v35
+printf "[*] Checking out vector35-arm64... "
+if [ ! -d "${V35WD}/arch-arm64/.git" ]; then
+	rm -rf ${V35WD}/arch-arm64
+	${MAKE} -C ${V35WD} arch-arm64 > /dev/null || exit 1
+fi
+echo OK
+
+printf "[*] Checking out vector35-armv7... "
+if [ ! -d "${V35WD}/arch-armv7/.git" ]; then
+	rm -rf ${V35WD}/arch-armv7
+	${MAKE} -C ${V35WD} arch-armv7 > /dev/null || exit 1
+fi
+echo OK
+printf "[*] Running configure... "
+CFGARGS=""
+if [ `uname` = Linux ]; then
+	CFGARGS="${CFGARGS} --with-rpath"
+fi
+./configure ${CFGARGS} > /dev/null 2>&1
+echo OK
+echo "[*] Ready. You can now run 'make'."

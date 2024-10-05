@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <item
+        android:id="@+id/fun_goto"
+        android:title="Goto"
+        />
+    <item
+        android:id="@+id/fun_xref"
+        android:title="Xref"
+        />
+    <item
+        android:id="@+id/fun_rename"
+        android:title="Rename"
+        />
+    <item
+        android:id="@+id/fun_copy"
+        android:title="Copy"
+        />
+<!--    <item-->
+<!--        android:id="@+id/fun_asm"-->
+<!--        android:title="Assembly"-->
+<!--        />-->
+
+</menu>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/drawer_right_bg"
+    android:paddingStart="25dp"
+    android:paddingTop="28dp"
+    android:layout_gravity="end"
+    tools:ignore="RtlSymmetry">
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:paddingStart="15dp"-->
+<!--        android:textStyle="bold"-->
+<!--        android:id="@+id/filelist_current_path" />-->
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:paddingStart="15dp"
+        android:id="@+id/sym_option"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:id="@+id/fun_list_tab"
+            android:text="Function"/>
+        <TextView
+            android:layout_centerVertical="true"
+            android:paddingLeft="10dp"
+            android:layout_toRightOf="@id/fun_list_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:id="@+id/sym_list_tab"
+            android:text="Symbol"/>
+        <TextView
+            android:layout_centerVertical="true"
+            android:paddingLeft="10dp"
+            android:layout_toRightOf="@id/sym_list_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:id="@+id/str_list_tab"
+            android:text="String"/>
+
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:hint="Search"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:id="@+id/search_bar"
+                android:textStyle="bold"
+                android:layout_toRightOf="@id/str_list_tab"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:background="@null"
+                android:layout_width="wrap_content"/>
+
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/sym_option"
+        android:layout_gravity="fill_vertical"
+        android:layout_width="match_parent"
+        android:id="@+id/recycleview_sym"
+        android:scrollbars="vertical"
+        android:scrollbarSize="10dp"
+        android:layout_height="match_parent"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:orientation="vertical"
+
+        android:layout_marginBottom="50dp">
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/drawer_float_action_add"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/ic_add"-->
+<!--            style="?attr/floatingActionButtonStyle"-->
+<!--            app:useCompatPadding="true"/>-->
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/drawer_float_action_parents"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:useCompatPadding="true"-->
+<!--            android:src="@drawable/ic_file_previous" />-->
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/drawer_float_action_home"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:useCompatPadding="true"-->
+<!--            android:src="@drawable/ic_home" />-->
+
+    </LinearLayout>
+</RelativeLayout>

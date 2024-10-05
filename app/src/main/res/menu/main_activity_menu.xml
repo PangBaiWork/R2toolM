@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <item
+        android:id="@+id/menu_folder"
+        android:title="Folder"
+        android:icon="@drawable/ic_folder"
+        app:showAsAction="ifRoom" />
+<!--    <item-->
+<!--        android:id="@+id/menu_apply_patch"-->
+<!--        android:title="Patch"-->
+<!--        android:icon="@drawable/ic_folder" />-->
+
+    <item
+        android:id="@+id/menu_save_project"
+        android:title="Save as project"
+        android:icon="@drawable/ic_folder" />
+
+</menu>
+

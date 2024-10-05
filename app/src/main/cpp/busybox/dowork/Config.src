@@ -1,0 +1,12 @@
+
+menu "dowork"
+
+config DOWORK
+	bool "dowork"
+	default y
+	help
+		dowork cli
+
+INSERT
+
+endmenu

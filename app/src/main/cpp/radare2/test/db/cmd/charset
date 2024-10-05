@@ -1,0 +1,165 @@
+NAME=ebcdic37 rabin env
+FILE=-
+CMDS=<<EOF
+e cfg.charset=ebcdic37
+%RABIN2_CHARSET
+# %RABIN2_CHARSET=ebcdic37
+!!rabin2 -N 8 -qqzz bins/s390/zos/prueba/prueba~ola
+EOF
+EXPECT=<<EOF
+ebcdic37
+Hola_mundo\n
+EOF
+RUN
+
+NAME=ebcdic37
+FILE=-
+CMDS=<<EOF
+b 10
+wx c89693814094a495849615
+e cfg.charset=ebcdic37
+ps
+EOF
+EXPECT=<<EOF
+Hola_mundo
+EOF
+RUN
+
+NAME=ebcdic37 hexstr
+FILE=bins/s390/zos/prueba/prueba
+ARGS=-n
+CMDS=<<EOF
+s 0x19a8
+px 16
+ps
+e cfg.charset=ebcdic37
+px 16
+ps 10
+EOF
+EXPECT=<<EOF
+- offset -  A8A9 AAAB ACAD AEAF B0B1 B2B3 B4B5 B6B7  89ABCDEF01234567
+0x000019a8  c896 9381 4094 a495 8496 1500 0000 0000  ....@...........
+\xc8\x96\x93\x81@\x94\xa4\x95\x84\x96\x15
+- offset -  A8A9 AAAB ACAD AEAF B0B1 B2B3 B4B5 B6B7  89ABCDEF01234567
+0x000019a8  c896 9381 4094 a495 8496 1500 0000 0000  Hola_mundo.?????
+Hola_mundo
+EOF
+RUN
+
+NAME=rival charset
+FILE=-
+CMDS=<<EOF
+e cfg.charset=pokered
+"w <RIVAL>"
+p8 4
+EOF
+EXPECT=<<EOF
+53000000
+EOF
+RUN
+
+NAME=e cfg.charset
+FILE=-
+CMDS=<<EOF
+e cfg.charset=?
+b 32
+wx a6b1aeb4ada37fb3ae7fafb1aeb3a4a2b349a8b3b2a4aba57fa5b1aeac7fa8b3
+ps
+e cfg.charset=pokered
+ps
+EOF
+EXPECT=<<EOF
+ascii
+ebcdic37
+hiragana
+iso8859_1
+katakana
+pokered
+\xa6\xb1\xae\xb4\xad\xa3\x7f\xb3\xae\x7f\xaf\xb1\xae\xb3\xa4\xa2\xb3I\xa8\xb3\xb2\xa4\xab\xa5\x7f\xa5\xb1\xae\xac\x7f\xa8\xb3
+ground-to-protect<PAGE>itself-fr
+EOF
+RUN
+
+NAME=ps and psz
+FILE=-
+CMDS=<<EOF
+e cfg.charset=?
+b 32
+wx 7f7f7f7f7f7f7f7f92a4aba5e3b1a4afaba8a2a0b3a8ada67f7f7f7fa0b1a1a8b3b1a0b1b87fa2aea3a47f7f7f7f7f7fa1b87f8cb182a7a4a4b9a47f9c9b7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f
+e cfg.charset=pokered
+ps $b
+ps  # should be the same as ps $b but its not
+psz
+e cfg.charset=?
+ps $b
+psz
+EOF
+EXPECT=<<EOF
+ascii
+ebcdic37
+hiragana
+iso8859_1
+katakana
+pokered
+--------Self-replicating----arbi
+--------Self-replicating----arbi
+--------Self-replicating----arbi
+ascii
+ebcdic37
+hiragana
+iso8859_1
+katakana
+pokered
+--------Self-replicating----arbi
+--------Self-replicating----arbi
+EOF
+RUN
+
+NAME=ps and psz with write
+FILE=-
+CMDS=<<EOF
+wx 7f7f7f7f7f7f7f7f92a4aba5e3b1a4afaba8a2a0b3a8ada67f7f7f7fa0b1a1a8b3b1a0b1b87fa2aea3a47f7f7f7f7f7fa1b87f8cb182a7a4a4b9a47f9c9b7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f
+e cfg.charset=pokered
+ps
+w hello-world-this-is-very-new
+wx 00 @ 28
+b 34
+ps
+psz
+pszj
+psj
+EOF
+EXPECT=<<EOF
+--------Self-replicating----arbitrary-code------by-MrCheeze-:)---------------------<NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL><NULL
+hello-world-this-is-very-new<NULL>
+hello-world-this-is-very-new
+{"string":"hello-world-this-is-very-new","offset":0,"section":"unknown","length":28,"type":"ascii"}
+{"string":"hello-world-this-is-very-new<NULL>","offset":0,"section":"unknown","length":34,"type":"ascii"}
+EOF
+RUN
+
+
+NAME=ps on iso8859_1
+FILE=-
+CMDS=<<EOF
+wx 4141410041414101
+e cfg.charset=iso8859_1
+ps 16
+EOF
+EXPECT=<<EOF
+AAA[nul]AAA[stx]
+EOF
+RUN
+
+NAME=ps on katakana
+FILE=-
+CMDS=<<EOF
+e cfg.charset=katakana
+w radare
+pr 9
+?e
+EOF
+EXPECT=<<EOF
+ラダレ
+EOF
+RUN

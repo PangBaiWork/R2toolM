@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/main_item"
+        android:title="Project">
+        <menu>
+            <item
+                android:id="@+id/project_add"
+                android:icon="@drawable/ic_add"
+                android:title="Open Binary"
+                android:checkable="true"
+                app:showAsAction="ifRoom"/>
+            <item
+                android:id="@+id/project_open"
+                android:icon="@drawable/ic_open"
+                android:title="Open Project"
+                android:checkable="true"
+                app:showAsAction="ifRoom"/>
+            <item
+                android:id="@+id/project_info"
+                android:icon="@drawable/ic_environment"
+                android:title="Binary Info"
+                android:checkable="true"
+                app:showAsAction="ifRoom"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/labels_item"
+        android:title="Global">
+        <menu>
+
+
+        </menu>
+    </item>
+</menu>

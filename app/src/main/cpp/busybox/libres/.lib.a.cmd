@@ -1,0 +1,1 @@
+cmd_libres/lib.a := rm -f libres/lib.a; x86_64-linux-android-ar  rcs libres/lib.a libres/dn_expand.o libres/dnscruft.o libres/dnscruft2.o libres/dnscruft3.o libres/freeaddrinfo.o libres/gai_strerror.o libres/getaddrinfo.o libres/gethostbyname2_r.o libres/h_errno.o libres/res_init.o libres/res_mkquery.o libres/res_query.o

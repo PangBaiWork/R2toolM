@@ -1,0 +1,88 @@
+24819 execve("./busybox", ["./busybox", "tar", "xzvf", "mtar.tar.gz"], 0x7fcfb583a0 /* 50 vars */) = 0
+24819 getpid()                          = 24819
+24819 mmap(NULL, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x703f1b5000
+24819 set_tid_address(0x5774b0)         = 24819
+24819 faccessat(AT_FDCWD, "/dev/urandom", R_OK) = 0
+24819 getrandom("\x29\x2a\x56\x2f\x7c\x64\xc1\xa0\x38\x7a\xb8\x21\x12\x0b\xd3\xbd\xa4\x38\x17\x8c\x68\x5f\xc3\xa0\x73\x3d\x6b\x00\x1f\x3f\x55\x48\x02\xbc\x13\x57\x73\xac\x4a\xe8", 40, GRND_NONBLOCK) = 40
+24819 mmap(NULL, 1104, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x703f1b4000
+24819 prctl(PR_SET_VMA, PR_SET_VMA_ANON_NAME, 0x703f1b4000, 1104, "arc4random data") = 0
+24819 sched_getscheduler(0)             = 0 (SCHED_OTHER)
+24819 mmap(NULL, 36864, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x703f1ab000
+24819 mprotect(0x703f1ab000, 4096, PROT_NONE) = 0
+24819 sigaltstack({ss_sp=0x703f1ac000, ss_flags=0, ss_size=32768}, NULL) = 0
+24819 prctl(PR_SET_VMA, PR_SET_VMA_ANON_NAME, 0x703f1ac000, 32768, "thread signal stack") = 0
+24819 mmap(NULL, 16777216, PROT_NONE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x703e1ab000
+24819 mprotect(0x703ee52000, 8192, PROT_READ|PROT_WRITE) = 0
+24819 mprotect(0x576000, 4096, PROT_READ) = 0
+24819 mprotect(0x576000, 4096, PROT_READ|PROT_WRITE) = 0
+24819 mprotect(0x576000, 4096, PROT_READ) = 0
+24819 fcntl(0, F_GETFL)                 = 0x20002 (flags O_RDWR|O_LARGEFILE)
+24819 fcntl(1, F_GETFL)                 = 0x20002 (flags O_RDWR|O_LARGEFILE)
+24819 fcntl(2, F_GETFL)                 = 0x20002 (flags O_RDWR|O_LARGEFILE)
+24819 mmap(NULL, 20480, PROT_NONE, MAP_PRIVATE|MAP_ANONYMOUS|MAP_NORESERVE, -1, 0) = 0x703e1a6000
+24819 mprotect(0x703e1a7000, 12288, PROT_READ|PROT_WRITE) = 0
+24819 rt_sigprocmask(SIG_BLOCK, ~[], [RTMIN], 8) = 0
+24819 rt_sigprocmask(SIG_SETMASK, [RTMIN], NULL, 8) = 0
+24819 prctl(PR_SET_VMA, PR_SET_VMA_ANON_NAME, 0x703e1a7000, 12288, "stack_and_tls:main") = 0
+24819 munmap(0x703f1b5000, 12288)       = 0
+24819 newfstatat(AT_FDCWD, "/dev/__properties__", {st_mode=S_IFDIR|0711, st_size=7440, ...}, 0) = 0
+24819 faccessat(AT_FDCWD, "/dev/__properties__/property_info", R_OK) = 0
+24819 openat(AT_FDCWD, "/dev/__properties__/property_info", O_RDONLY|O_NOFOLLOW|O_CLOEXEC) = 3
+24819 fstat(3, {st_mode=S_IFREG|0444, st_size=92548, ...}) = 0
+24819 mmap(NULL, 92548, PROT_READ, MAP_SHARED, 3, 0) = 0x703e18f000
+24819 close(3)                          = 0
+24819 mmap(NULL, 14720, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x703e18b000
+24819 prctl(PR_SET_VMA, PR_SET_VMA_ANON_NAME, 0x703e18b000, 14720, "System property context nodes") = 0
+24819 openat(AT_FDCWD, "/dev/__properties__/properties_serial", O_RDONLY|O_NOFOLLOW|O_CLOEXEC) = 3
+24819 fstat(3, {st_mode=S_IFREG|0444, st_size=131072, ...}) = 0
+24819 mmap(NULL, 131072, PROT_READ, MAP_SHARED, 3, 0) = 0x703e16b000
+24819 close(3)                          = 0
+24819 openat(AT_FDCWD, "/dev/__properties__/u:object_r:debug_prop:s0", O_RDONLY|O_NOFOLLOW|O_CLOEXEC) = 3
+24819 fstat(3, {st_mode=S_IFREG|0444, st_size=131072, ...}) = 0
+24819 mmap(NULL, 131072, PROT_READ, MAP_SHARED, 3, 0) = 0x703e14b000
+24819 close(3)                          = 0
+24819 rt_sigaction(SIGRT_7, {sa_handler=0x2dc624, sa_mask=[], sa_flags=SA_RESTART}, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+24819 openat(AT_FDCWD, "/dev/__properties__/u:object_r:arm64_memtag_prop:s0", O_RDONLY|O_NOFOLLOW|O_CLOEXEC) = 3
+24819 fstat(3, {st_mode=S_IFREG|0444, st_size=131072, ...}) = 0
+24819 mmap(NULL, 131072, PROT_READ, MAP_SHARED, 3, 0) = 0x703e12b000
+24819 close(3)                          = 0
+24819 openat(AT_FDCWD, "/dev/__properties__/u:object_r:default_prop:s0", O_RDONLY|O_NOFOLLOW|O_CLOEXEC) = 3
+24819 fstat(3, {st_mode=S_IFREG|0444, st_size=131072, ...}) = 0
+24819 mmap(NULL, 131072, PROT_READ, MAP_SHARED, 3, 0) = 0x703e10b000
+24819 close(3)                          = 0
+24819 prctl(PR_SET_TAGGED_ADDR_CTRL, PR_TAGGED_ADDR_ENABLE|PR_MTE_TCF_NONE, 0, 0, 0) = 0
+24819 mprotect(0x576000, 4096, PROT_READ|PROT_WRITE) = 0
+24819 mprotect(0x576000, 4096, PROT_READ) = 0
+24819 rt_sigaction(SIGRT_4, {sa_handler=SIG_IGN, sa_mask=[], sa_flags=SA_RESTART}, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+24819 rt_sigaction(SIGRT_6, {sa_handler=SIG_IGN, sa_mask=[], sa_flags=SA_RESTART}, {sa_handler=SIG_IGN, sa_mask=[], sa_flags=0}, 8) = 0
+24819 openat(AT_FDCWD, "/sys/kernel/mm/transparent_hugepage/enabled", O_RDONLY) = -1 ENOENT (No such file or directory)
+24819 mmap(NULL, 2097152, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x703df0b000
+24819 prctl(PR_SET_VMA, PR_SET_VMA_ANON_NAME, 0x703df0b000, 2097152, "libc_malloc") = 0
+24819 munmap(0x703df0b000, 2097152)     = 0
+24819 mmap(NULL, 4190208, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x703dd0c000
+24819 prctl(PR_SET_VMA, PR_SET_VMA_ANON_NAME, 0x703dd0c000, 4190208, "libc_malloc") = 0
+24819 munmap(0x703dd0c000, 999424)      = 0
+24819 munmap(0x703e000000, 1093632)     = 0
+24819 mmap(NULL, 2097152, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x703dc00000
+24819 prctl(PR_SET_VMA, PR_SET_VMA_ANON_NAME, 0x703dc00000, 2097152, "libc_malloc") = 0
+24819 mmap(NULL, 4194304, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x703d800000
+24819 prctl(PR_SET_VMA, PR_SET_VMA_ANON_NAME, 0x703d800000, 4194304, "libc_malloc") = 0
+24819 mprotect(0x35b000, 32768, PROT_READ) = 0
+24819 openat(AT_FDCWD, "/dev/__properties__/u:object_r:build_prop:s0", O_RDONLY|O_NOFOLLOW|O_CLOEXEC) = 3
+24819 fstat(3, {st_mode=S_IFREG|0444, st_size=131072, ...}) = 0
+24819 mmap(NULL, 131072, PROT_READ, MAP_SHARED, 3, 0) = 0x703e0eb000
+24819 close(3)                          = 0
+24819 mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x703f1b7000
+24819 prctl(PR_SET_VMA, PR_SET_VMA_ANON_NAME, 0x703f1b7000, 4096, "atexit handlers") = 0
+24819 mprotect(0x703f1b7000, 4096, PROT_READ) = 0
+24819 mprotect(0x703f1b7000, 4096, PROT_READ|PROT_WRITE) = 0
+24819 mprotect(0x703f1b7000, 4096, PROT_READ) = 0
+24819 getuid()                          = 10331
+24819 getcwd("/data/data/com.termux/files/home/work/busybox", 128) = 46
+24819 fstat(1, {st_mode=S_IFCHR|0600, st_rdev=makedev(0x88, 0x6), ...}) = 0
+24819 ioctl(1, TCGETS, {c_iflag=ICRNL|IUTF8, c_oflag=NL0|CR0|TAB0|BS0|VT0|FF0|OPOST|ONLCR, c_cflag=B38400|CS8|CREAD, c_lflag=ISIG|ICANON|ECHO|ECHOE|ECHOK|IEXTEN|ECHOCTL|ECHOKE, ...}) = 0
+24819 write(1, "/data/data/com.termux/files/home/work/busybox/mtar.tar.gz: No such file or directory\n", 85) = 85
+24819 mprotect(0x703f1b7000, 4096, PROT_READ|PROT_WRITE) = 0
+24819 mprotect(0x703f1b7000, 4096, PROT_READ) = 0
+24819 exit_group(0)                     = ?
+24819 +++ exited with 0 +++

@@ -1,0 +1,5 @@
+lib-y :=
+
+lib-$(CONFIG_DOWORK) += dowork.o
+
+INSERT

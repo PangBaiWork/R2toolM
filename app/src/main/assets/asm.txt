@@ -1,0 +1,43 @@
+┌ 144: sym.Java_com_chick_androdbgme_MainActivity_stringFromJNI (int64_t arg1, int64_t arg_40h);
+│           ; arg int64_t arg1 @ x0
+│           ; arg int64_t arg_40h @ sp+0x80
+│           ; var int64_t var_0h @ sp+0x0
+│           ; var int64_t var_10h @ sp+0x10
+│           ; var int64_t var_20h @ sp+0x20
+│           ; var int64_t var_30h @ sp+0x30
+│           0x000158c8      ff0301d1       sub sp, sp, 0x40
+│           0x000158cc      fd7b02a9       stp x29, x30, [sp, 0x20]
+│           0x000158d0      f44f03a9       stp x20, x19, [sp, 0x30]
+│           0x000158d4      fd830091       add x29, var_20h
+│           0x000158d8      54d03bd5       mrs x20, tpidr_el0
+│           0x000158dc      c9ffffb0       adrp x9, 0xe000
+│           0x000158e0      881640f9       ldr x8, [x20, 0x28]
+│           0x000158e4      29213c91       add x9, x9, 0xf08
+│           0x000158e8      2a0140f9       ldr x10, [x9]
+│           0x000158ec      296140f8       ldur x9, [x9, 6]
+│           0x000158f0      a8831ff8       stur x8, [x29, -8]
+│           0x000158f4      88038052       mov w8, 0x1c
+│           0x000158f8      e8030039       strb w8, [sp]
+│           0x000158fc      ea1300f8       stur x10, [sp, 1]
+│           0x00015900      e97300f8       stur x9, [sp, 7]
+│           0x00015904      ff3f0039       strb wzr, [sp, 0xf]         ; arg1
+│           0x00015908      080040f9       ldr x8, [x0]                ; arg1
+│           0x0001590c      e9030091       mov x9, sp
+│           0x00015910      210140b2       orr x1, x9, 1
+│           0x00015914      089d42f9       ldr x8, [x8, 0x538]
+│           0x00015918      00013fd6       blr x8
+│           0x0001591c      e8034039       ldrb w8, [sp]
+│           0x00015920      f30300aa       mov x19, x0                 ; arg1
+│       ┌─< 0x00015924      68000036       tbz w8, 0, 0x15930
+│       │   0x00015928      e00b40f9       ldr x0, [var_10h]
+│       │   0x0001592c      69710094       bl 0x31ed0                  ; fcn.0002d554+0x497c
+│       └─> 0x00015930      881640f9       ldr x8, [x20, 0x28]
+│           0x00015934      a9835ff8       ldur x9, [x29, -8]
+│           0x00015938      1f0109eb       cmp x8, x9
+│       ┌─< 0x0001593c      c1000054       b.ne 0x15954
+│       │   0x00015940      e00313aa       mov x0, x19
+│       │   0x00015944      f44f43a9       ldp x20, x19, [var_30h]
+│       │   0x00015948      fd7b42a9       ldp x29, x30, [var_20h]
+│       │   0x0001594c      ff030191       add sp, arg_40h
+│       │   0x00015950      c0035fd6       ret
+└       └─> 0x00015954      63710094       bl sym.imp.__stack_chk_fail ; void __stack_chk_fail(void)
